@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
@@ -9,7 +8,6 @@ import {
   ErrorMsgStyled,
 } from 'components/ContactsInput/ContactsForm.styled';
 import { Button } from 'components/reusableComponents';
-import { Title } from 'components/reusableComponents';
 import { Box } from 'components/reusableComponents';
 
 const validationSchema = yup.object().shape({
@@ -22,7 +20,7 @@ const validationSchema = yup.object().shape({
       "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
     )
     .required('Please enter contact name'),
-  number: yup
+  phone: yup
     .string()
     .min(3)
     .max(20)
@@ -31,14 +29,22 @@ const validationSchema = yup.object().shape({
       'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
     )
     .required('Please enter contact number'),
+  email: yup
+    .string()
+    .min(5)
+    .max(30)
+    .matches(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Email must to match next format: example@mail.com'
+    ),
 });
 
-export default function ContactsInput() {
+export default function ContactsInput({ onFormSubmit, initPhone = '' }) {
   const initialValues = {
     name: '',
-    number: '',
+    phone: initPhone,
+    email: '',
   };
-  const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
 
   const onSubmit = (values, { resetForm }) => {
@@ -48,13 +54,13 @@ export default function ContactsInput() {
       return existName === newName;
     });
     if (isInContacts) alert(`${values.name} is already in contacts.`);
-    else dispatch(addContact(values));
+    else onFormSubmit(values);
+
     resetForm();
   };
 
   return (
     <Box>
-      <Title>Create contact</Title>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -68,9 +74,14 @@ export default function ContactsInput() {
           <ErrorMsgStyled component="span" name="name" />
           <InputLabel>
             Number
-            <Input type="tel" name="number" />
+            <Input type="tel" name="phone" />
           </InputLabel>
-          <ErrorMsgStyled component="span" name="number" />
+          <ErrorMsgStyled component="span" name="phone" />
+          <InputLabel>
+            Email
+            <Input type="email" name="email" />
+          </InputLabel>
+          <ErrorMsgStyled component="span" name="email" />
           <Button type="submit">Add contact</Button>
         </Form>
       </Formik>

@@ -1,6 +1,6 @@
 import { Button } from 'components/reusableComponents';
 import { useDispatch } from 'react-redux';
-import { ContactsItemStyled, Avatar } from './ContactsItem.styled';
+import { ContactsItemStyled, Avatar, ContactName } from './ContactsItem.styled';
 import { deleteContact } from 'redux/operations';
 import { AiOutlineUser } from 'react-icons/ai';
 
@@ -15,13 +15,8 @@ const ContactsItem = ({ data: { name, phone, id, avatar, email } }) => {
         <AiOutlineUser size={56} />
       )}
       <div>
-        <span>{name}: </span>
-        {phone}
-        <p>
-          <span>Email:</span>
-          {email}
-        </p>
-        <Button onClick={() => onContactDelete(id)}>Delete</Button>
+        <ContactName>{name}</ContactName>
+        <span>{phone}</span>
       </div>
     </ContactsItemStyled>
   );

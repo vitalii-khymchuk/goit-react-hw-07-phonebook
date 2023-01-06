@@ -20,3 +20,11 @@ ol {
   list-style: none;
   padding: 0;
 }
+
+a {
+  text-decoration: none;
+}
+
+input {
+  box-sizing: border-box;
+}

@@ -1,16 +1,11 @@
 import styled from '@emotion/styled';
 
 const ContactsItemStyled = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 20px;
   padding: 4px 8px;
-  font-size: 16px;
-
-  & span {
-    font-weight: 600;
-  }
-
-  & button {
-    margin-left: 8px;
-  }
+  font-size: 20px;
 `;
 
 const Avatar = styled.img`
@@ -19,4 +14,9 @@ const Avatar = styled.img`
   border-radius: 50%;
 `;
 
-export { ContactsItemStyled, Avatar };
+const ContactName = styled.span`
+  display: block;
+  font-weight: 600;
+`;
+
+export { ContactsItemStyled, Avatar, ContactName };

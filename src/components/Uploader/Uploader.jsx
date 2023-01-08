@@ -25,7 +25,7 @@ const Uploader = ({ onPhotoUpload }) => {
   const [images, setImages] = React.useState([]);
   const maxNumber = 1;
 
-  const onChange = async (imageList, addUpdateIndex) => {
+  const onPhotoChange = async (imageList, addUpdateIndex) => {
     // data for submit
     const base64Image = imageList[0].data_url;
     const blobImage = await convertB64ToBlob(base64Image);
@@ -40,7 +40,7 @@ const Uploader = ({ onPhotoUpload }) => {
       <ImageUploading
         multiple={false}
         value={images}
-        onChange={onChange}
+        onChange={onPhotoChange}
         maxNumber={maxNumber}
         dataURLKey="data_url"
       >

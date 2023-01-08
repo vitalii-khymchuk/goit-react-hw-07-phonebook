@@ -3,6 +3,7 @@ import Layout from './Layout';
 import Dialer from 'Pages/Dialer';
 import Contacts from 'Pages/Contacts';
 import CreateContact from 'Pages/CreateContact';
+import ContactInfo from 'Pages/ContactInfo';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchContacts } from 'redux/operations';
@@ -18,6 +19,7 @@ const App = () => {
         <Route index element={<Dialer />} />
         <Route path="contacts" element={<Contacts />} />
         <Route path="new" element={<CreateContact />} />
+        <Route path="contacts/:id" element={<ContactInfo />} />
       </Route>
     </Routes>
   );

@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Box } from 'components/reusableComponents';
 import { useNavigate } from 'react-router-dom';
+import { makeCall } from 'utils/phoneAPI';
 
 const Dialer = () => {
   const [number, setNumber] = useState('');
@@ -24,11 +25,10 @@ const Dialer = () => {
       name.toLowerCase().includes(locFilter) || phone.includes(locFilter)
   );
 
-  const onCallBtnPress = () => {
-    window.location.href = `tel:${number}`;
-  };
+  const onCallBtnPress = () => makeCall(number);
 
   const onSaveBtnPress = () => {
+    if (!number) return;
     navigate('new', { state: { number } });
   };
 

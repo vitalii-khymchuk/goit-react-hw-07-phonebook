@@ -39,7 +39,7 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-export default function ContactsInput({ onFormSubmit, initPhone = '' }) {
+const ContactsInput = ({ onFormSubmit, initPhone = '' }) => {
   const initialValues = {
     name: '',
     phone: initPhone,
@@ -66,7 +66,7 @@ export default function ContactsInput({ onFormSubmit, initPhone = '' }) {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        <Form autoComplete="off">
+        <Form autoComplete="off" id="my-form">
           <InputLabel>
             Name
             <Input type="text" name="name" />
@@ -82,9 +82,10 @@ export default function ContactsInput({ onFormSubmit, initPhone = '' }) {
             <Input type="email" name="email" />
           </InputLabel>
           <ErrorMsgStyled component="span" name="email" />
-          <Button type="submit">Add contact</Button>
         </Form>
       </Formik>
     </Box>
   );
-}
+};
+
+export default ContactsInput;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
+
 import { fetchContacts, addContact, deleteContact } from './operations';
 
 const initialState = { items: [], isLoading: false, error: null };
@@ -14,18 +14,6 @@ const rejectedHandler = (state, { payload }) => ({
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  // reducers: {
-  //   addContact(state, action) {
-  //     state.items.push({
-  //       name: action.payload.name,
-  //       number: action.payload.number,
-  //       id: nanoid(),
-  //     });
-  //   },
-  //   deleteContact(state, action) {
-  //     return state.filter(e => e.id !== action.payload);
-  //   },
-  // },
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, pendingHandler)

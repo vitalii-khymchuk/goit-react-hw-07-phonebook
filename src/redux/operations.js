@@ -38,4 +38,17 @@ const deleteContact = createAsyncThunk(
     }
   }
 );
-export { fetchContacts, deleteContact, addContact };
+
+const getContactInfo = createAsyncThunk(
+  'contacts/getContactsInfo',
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await axios.get(`/contacts/${id}`);
+      return data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export { fetchContacts, deleteContact, addContact, getContactInfo };

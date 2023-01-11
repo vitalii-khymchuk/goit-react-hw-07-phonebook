@@ -56,7 +56,9 @@ const ContactInfo = () => {
   };
 
   const onEditClick = () => {
-    navigate(`/edit/&{id}`, {state: {...location.state, from: location, contactsInfo}});
+    navigate(`/edit/&{id}`, {
+      state: { ...location.state, contactsInfo },
+    });
   };
 
   return (

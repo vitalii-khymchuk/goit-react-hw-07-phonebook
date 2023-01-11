@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { selectContacts } from 'redux/selectors';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import {
@@ -14,7 +12,7 @@ const validationSchema = yup.object().shape({
   name: yup
     .string()
     .min(3)
-    .max(20)
+    .max(30)
     .matches(
       /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
       "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -45,17 +43,9 @@ const ContactsInput = ({ onFormSubmit, initData: { name, phone, email } }) => {
     phone,
     email,
   };
-  const contacts = useSelector(selectContacts);
 
   const onSubmit = (values, { resetForm }) => {
-    const isInContacts = contacts.some(contact => {
-      const existName = contact.name.toLowerCase();
-      const newName = values.name.toLowerCase();
-      return existName === newName;
-    });
-    if (isInContacts) alert(`${values.name} is already in contacts.`);
-    else onFormSubmit(values);
-
+    onFormSubmit(values);
     resetForm();
   };
 

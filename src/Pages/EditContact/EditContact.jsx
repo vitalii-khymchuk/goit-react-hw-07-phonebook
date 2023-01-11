@@ -35,12 +35,19 @@ const CreateContact = () => {
     const contactData = { ...initData, ...values, avatar };
     const { payload } = await dispatch(editContact(contactData));
     const id = payload.id;
-    navigate(`/contacts/${id}`, { replace: true });
+    navigate(`/contacts/${id}`, {
+      state: location.state,
+      replace: true,
+    });
   };
 
   const onPhotoUpload = base64Photo => setPhoto(base64Photo);
 
-  const onCancelClick = () => navigate(`/contacts/${initData.id}`);
+  const onCancelClick = () =>
+    navigate(`/contacts/${initData.id}`, {
+      state: location.state,
+      replace: true,
+    });
   return (
     <Box display="grid" gridTemplateRows="50px 1fr">
       <CreateContNav CreateContNav>

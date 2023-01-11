@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getContactInfo, deleteContact } from 'redux/operations';
-import { clearContactsInfo } from 'redux/contactInfoSlice';
+import { clearContactsInfo } from 'redux/contactsInfo/contactInfoSlice';
 import {
   selectContactInfo,
   selectIsContactInfoLoading,
   selectContactInfoError,
-} from 'redux/selectors';
+} from 'redux/contactsInfo/selectors';
 import {
   ProfileAvatar,
   Name,

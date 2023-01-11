@@ -5,13 +5,12 @@ import {
   addContact,
   deleteContact,
   editContact,
-} from './operations';
+} from '../operations';
 
 const initialState = {
   items: [],
   isLoading: false,
   error: null,
-  newContactId: '',
 };
 
 const pendingHandler = state => ({ ...state, isLoading: true });
@@ -40,8 +39,9 @@ const contactsSlice = createSlice({
         state.error = null;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = null;
         state.items.push(payload);
-        state.newContactId = payload.id;
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.isLoading = false;

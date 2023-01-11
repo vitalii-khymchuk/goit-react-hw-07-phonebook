@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editContact } from 'redux/operations';
-import { selectContactsError } from 'redux/selectors';
+import { selectContactsError } from 'redux/contacts/selectors';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   CreateContNav,

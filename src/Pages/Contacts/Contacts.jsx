@@ -3,7 +3,10 @@ import Filter from 'components/Filter';
 import Error from 'components/Error';
 import { useSelector } from 'react-redux';
 import { Box } from 'components/reusableComponents';
-import { selectContactsError, selectFilteredContacts } from 'redux/selectors';
+import {
+  selectContactsError,
+  selectFilteredContacts,
+} from 'redux/contacts/selectors';
 
 const Contacts = () => {
   const error = useSelector(selectContactsError);

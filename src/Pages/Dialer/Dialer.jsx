@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  selectContacts,
-  selectFilter,
-  selectContactsError,
-} from 'redux/selectors';
+import { selectContacts, selectContactsError } from 'redux/contacts/selectors';
+import { selectFilter } from 'redux/filter/selectors';
 import { useNavigate } from 'react-router-dom';
 import { makeCall } from 'utils/phoneAPI';
 import { Box } from 'components/reusableComponents';

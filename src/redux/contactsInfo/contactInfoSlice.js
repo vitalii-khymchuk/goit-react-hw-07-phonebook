@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getContactInfo } from './operations';
+import { getContactInfo } from '../operations';
 
 const initialState = { info: {}, isLoading: false, error: null };
 

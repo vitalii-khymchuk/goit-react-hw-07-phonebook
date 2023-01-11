@@ -5,7 +5,7 @@ import {
   InputLabel,
   Input,
   ErrorMsgStyled,
-} from 'components/ContactsInput/ContactsForm.styled';
+} from 'components/ContactsForm/ContactsForm.styled';
 import { Box } from 'components/reusableComponents';
 
 const validationSchema = yup.object().shape({

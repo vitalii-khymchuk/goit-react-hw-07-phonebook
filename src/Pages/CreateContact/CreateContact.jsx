@@ -7,7 +7,7 @@ import { CreateContNav, NavItem } from './CreateContact.styled';
 import { Box, Title } from 'components/reusableComponents';
 import base64userAvatar from 'photos/base64userAvatar';
 import Uploader from 'components/Uploader';
-import ContactsInput from 'components/ContactsInput';
+import ContactsInput from 'components/ContactsForm';
 import Error from 'components/Error';
 
 const CreateContact = () => {

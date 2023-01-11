@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import {
@@ -7,7 +8,6 @@ import {
   Input,
   ErrorMsgStyled,
 } from 'components/ContactsInput/ContactsForm.styled';
-import { Button } from 'components/reusableComponents';
 import { Box } from 'components/reusableComponents';
 
 const validationSchema = yup.object().shape({
@@ -34,18 +34,18 @@ const validationSchema = yup.object().shape({
     .min(5)
     .max(30)
     .matches(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Email must to match next format: example@mail.com'
     ),
 });
 
-const ContactsInput = ({ onFormSubmit, initPhone = '' }) => {
+const ContactsInput = ({ onFormSubmit, initData: { name, phone, email } }) => {
   const initialValues = {
-    name: '',
-    phone: initPhone,
-    email: '',
+    name,
+    phone,
+    email,
   };
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const onSubmit = (values, { resetForm }) => {
     const isInContacts = contacts.some(contact => {
@@ -86,6 +86,15 @@ const ContactsInput = ({ onFormSubmit, initPhone = '' }) => {
       </Formik>
     </Box>
   );
+};
+
+ContactsInput.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
+  initData: PropTypes.shape({
+    name: PropTypes.string,
+    phone: PropTypes.string,
+    email: PropTypes.string,
+  }),
 };
 
 export default ContactsInput;

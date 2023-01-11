@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import ContactsItem from 'components/ContactsItem';
 import { Box } from 'components/reusableComponents';
-
 const ContactsList = ({ contacts = [] }) => {
   return (
     <Box>
@@ -10,6 +10,10 @@ const ContactsList = ({ contacts = [] }) => {
       </ul>
     </Box>
   );
+};
+
+ContactsList.propTypes = {
+  contacts: PropTypes.array.isRequired,
 };
 
 export default ContactsList;

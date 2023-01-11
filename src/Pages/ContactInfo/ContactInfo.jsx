@@ -1,20 +1,27 @@
-import { Box } from 'components/reusableComponents';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getContactInfo, deleteContact } from 'redux/operations';
-import { selectContactInfo } from 'redux/selectors';
+import { clearContactsInfo } from 'redux/contactInfoSlice';
+import {
+  selectContactInfo,
+  selectIsContactInfoLoading,
+  selectContactInfoError,
+} from 'redux/selectors';
 import {
   ProfileAvatar,
   Name,
   Info,
   CallEmailBtn,
   NavBar,
+  NavItem,
 } from './ContactInfo.styled';
 import { IoCallOutline } from 'react-icons/io5';
 import { AiOutlineMail } from 'react-icons/ai';
 import { makeCall, writeEmail } from 'utils/phoneAPI';
-import { deleteContactsInfo } from 'redux/contactInfoSlice';
+import { Box } from 'components/reusableComponents';
+import avatarPlaceholder from 'photos/avatarIsLoading.gif';
+import Error from 'components/Error';
 
 const formateDate = date => new Date(date).toLocaleString();
 
@@ -24,22 +31,34 @@ const ContactInfo = () => {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    dispatch(getContactInfo(id));
+    const promise = dispatch(getContactInfo(id));
     return () => {
-      dispatch(deleteContactsInfo());
+      promise.abort();
+      dispatch(clearContactsInfo());
     };
-  }, []);
+  }, [dispatch, id]);
+  const isLoading = useSelector(selectIsContactInfoLoading);
+  const error = useSelector(selectContactInfoError);
   const contactsInfo = useSelector(selectContactInfo);
+
   const { avatar, createdAt, email, name, phone } = contactsInfo;
+  const profileAvatar = isLoading || !avatar ? avatarPlaceholder : avatar;
+  const backPath = location.state?.from ?? '/';
+
   const onCallClick = () => makeCall(phone);
   const onEmailClick = () => writeEmail(email);
   const onDeleteClick = () => {
     dispatch(deleteContact(id));
-    navigate(location.state.from, { replace: true, state: location.state });
+    navigate(backPath, { replace: true, state: location.state });
   };
   const onBackClick = () => {
-    navigate(location.state.from, { state: location.state });
+    navigate(backPath, { state: location.state });
   };
+
+  const onEditClick = () => {
+    navigate(`/edit/&{id}`, {state: {...location.state, from: location, contactsInfo}});
+  };
+
   return (
     <Box
       display="grid"
@@ -49,33 +68,41 @@ const ContactInfo = () => {
       border="1px solid black"
       mx="auto"
     >
-      <Box bg="grey" position="relative">
-        <NavBar>
-          <button type="button" onClick={onDeleteClick}>
-            Delete
-          </button>
-          <button type="button" onClick={onBackClick}>
-            Back
-          </button>
-        </NavBar>
-        <ProfileAvatar src={avatar} alt={`${name}'s avatar`} />
-      </Box>
-      <Box mt="10px" px="15px">
-        <Name>{name}</Name>
-        <CallEmailBtn onClick={onCallClick}>
-          <Info>{phone}</Info>
-          <IoCallOutline size={24} />
-        </CallEmailBtn>
-        {email && (
-          <CallEmailBtn onClick={onEmailClick}>
-            <Info>{email}</Info>
-            <AiOutlineMail size={24} />
-          </CallEmailBtn>
+      <>
+        <Box bg="grey" position="relative">
+          <NavBar>
+            <NavItem type="button" onClick={onEditClick}>
+              Edit
+            </NavItem>
+            <NavItem type="button" onClick={onDeleteClick}>
+              Delete
+            </NavItem>
+            <NavItem type="button" onClick={onBackClick}>
+              Back
+            </NavItem>
+          </NavBar>
+          <ProfileAvatar src={profileAvatar} alt={`${name}'s avatar`} />
+        </Box>
+        {error && <Error msg={error} />}
+        {!isLoading && !error && (
+          <Box mt="10px" px="15px">
+            <Name>{name}</Name>
+            <CallEmailBtn onClick={onCallClick}>
+              <Info>{phone}</Info>
+              <IoCallOutline size={24} />
+            </CallEmailBtn>
+            {email && (
+              <CallEmailBtn onClick={onEmailClick}>
+                <Info>{email}</Info>
+                <AiOutlineMail size={24} />
+              </CallEmailBtn>
+            )}
+            <Info>
+              Created at: <br /> {formateDate(createdAt)}
+            </Info>
+          </Box>
         )}
-        <Info>
-          Created at: <br /> {formateDate(createdAt)}
-        </Info>
-      </Box>
+      </>
     </Box>
   );
 };

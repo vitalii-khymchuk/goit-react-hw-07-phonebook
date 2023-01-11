@@ -7,7 +7,7 @@ const contactInfoSlice = createSlice({
   name: 'contactInfo',
   initialState,
   reducers: {
-    deleteContactsInfo(state) {
+    clearContactsInfo(state) {
       state.info = {};
     },
   },
@@ -27,6 +27,6 @@ const contactInfoSlice = createSlice({
       }),
 });
 
-export const { deleteContactsInfo } = contactInfoSlice.actions;
+export const { clearContactsInfo } = contactInfoSlice.actions;
 
 export { contactInfoSlice };

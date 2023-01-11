@@ -1,19 +1,24 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
+import {
+  selectContacts,
+  selectFilter,
+  selectContactsError,
+} from 'redux/selectors';
+import { useNavigate } from 'react-router-dom';
+import { makeCall } from 'utils/phoneAPI';
+import { Box } from 'components/reusableComponents';
 import Numpad from 'components/Keyboard';
 import ContactsList from 'components/ContactsList';
 import Filter from 'components/Filter';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { Box } from 'components/reusableComponents';
-import { useNavigate } from 'react-router-dom';
-import { makeCall } from 'utils/phoneAPI';
+import Error from 'components/Error';
 
 const Dialer = () => {
   const [number, setNumber] = useState('');
   const [locFilter, setLocFilter] = useState('');
-  const filter = useSelector(getFilter);
-  const contacts = useSelector(getContacts);
+  const error = useSelector(selectContactsError);
+  const filter = useSelector(selectFilter);
+  const contacts = useSelector(selectContacts);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,21 +37,27 @@ const Dialer = () => {
     navigate('new', { state: { number } });
   };
 
-  const onFilterChange = number => {
+  const onNumberChange = number => {
     setNumber(number);
     setLocFilter(number);
   };
   return (
     <>
-      <Filter />
-      <Box height={270} overflowY="scroll">
-        {locFilter && <ContactsList contacts={filteredContacts} />}
-      </Box>
-      <Numpad
-        onCallBtnPress={onCallBtnPress}
-        onSaveBtnPress={onSaveBtnPress}
-        onFilterChange={onFilterChange}
-      />
+      {error ? (
+        <Error msg={error} />
+      ) : (
+        <>
+          <Filter />
+          <Box height={270} overflowY="scroll">
+            {locFilter && <ContactsList contacts={filteredContacts} />}
+          </Box>
+          <Numpad
+            onCallBtnPress={onCallBtnPress}
+            onSaveBtnPress={onSaveBtnPress}
+            onNumberChange={onNumberChange}
+          />
+        </>
+      )}
     </>
   );
 };

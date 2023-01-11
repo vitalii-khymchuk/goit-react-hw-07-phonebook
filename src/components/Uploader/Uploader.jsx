@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImageUploading from 'react-images-uploading';
 import {
@@ -10,6 +11,7 @@ import { base64ToBlob, blobToBase64 } from 'base64-blob';
 import { fromBlob } from 'image-resize-compress';
 import { Box } from 'components/reusableComponents';
 import { AiOutlinePlusCircle, AiOutlineReload } from 'react-icons/ai';
+import { useEffect } from 'react';
 
 const convertB64ToBlob = b64Data => base64ToBlob(b64Data);
 const convertBlobToB64 = blobFile => blobToBase64(blobFile);
@@ -21,9 +23,15 @@ const compressBlobImg = (blobFile, resolution) => {
   return fromBlob(blobFile, quality, width, height, format);
 };
 
-const Uploader = ({ onPhotoUpload }) => {
+const Uploader = ({ onPhotoUpload, preloadPhoto = null }) => {
   const [images, setImages] = React.useState([]);
   const maxNumber = 1;
+
+  useEffect(() => {
+    if (preloadPhoto) {
+      setImages([{ data_url: preloadPhoto }]);
+    }
+  }, [preloadPhoto]);
 
   const onPhotoChange = async (imageList, addUpdateIndex) => {
     // data for submit
@@ -72,7 +80,7 @@ const Uploader = ({ onPhotoUpload }) => {
               <AvatarWrapper key={index} className="image-item">
                 <UploadedAvatar src={image['data_url']} alt="" width="100" />
                 <ChangeImageBtn onClick={() => onImageUpdate(index)}>
-                  <AiOutlineReload size={24} />
+                  <AiOutlineReload size={64} color="rgba(200, 200, 200, 0.5)" />
                 </ChangeImageBtn>
               </AvatarWrapper>
             ))}
@@ -81,6 +89,11 @@ const Uploader = ({ onPhotoUpload }) => {
       </ImageUploading>
     </Box>
   );
+};
+
+Uploader.propTypes = {
+  onPhotoUpload: PropTypes.func.isRequired,
+  preloadPhoto: PropTypes.string,
 };
 
 export default Uploader;

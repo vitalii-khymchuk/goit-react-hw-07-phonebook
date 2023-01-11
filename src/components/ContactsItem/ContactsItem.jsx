@@ -1,12 +1,8 @@
-import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { ContactsItemStyled, Avatar, ContactName } from './ContactsItem.styled';
-import { Link } from 'react-router-dom';
-import { deleteContact } from 'redux/operations';
 import LinkToContact from 'components/LinkToContact';
 
 const ContactsItem = ({ data: { name, phone, id, avatar } }) => {
-  const dispatch = useDispatch();
-  const onContactDelete = id => dispatch(deleteContact(id));
   return (
     <>
       <LinkToContact id={id}>
@@ -20,6 +16,15 @@ const ContactsItem = ({ data: { name, phone, id, avatar } }) => {
       </LinkToContact>
     </>
   );
+};
+
+ContactsItem.propTypes = {
+  data: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    avatar: PropTypes.string,
+  }).isRequired,
 };
 
 export default ContactsItem;

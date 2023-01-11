@@ -1,17 +1,22 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './Layout';
-import Dialer from 'Pages/Dialer';
-import Contacts from 'Pages/Contacts';
-import CreateContact from 'Pages/CreateContact';
-import ContactInfo from 'Pages/ContactInfo';
-import { useEffect } from 'react';
+import { useEffect, lazy } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchContacts } from 'redux/operations';
+import Layout from './Layout';
+import Dialer from 'Pages/Dialer';
+
+const Contacts = lazy(() => import('Pages/Contacts'));
+const CreateContact = lazy(() => import('Pages/CreateContact'));
+const ContactInfo = lazy(() => import('Pages/ContactInfo'));
+const EditContact = lazy(() => import('Pages/EditContact'));
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchContacts());
+    const promise = dispatch(fetchContacts());
+    return () => {
+      promise.abort();
+    };
   }, [dispatch]);
   return (
     <Routes>
@@ -20,6 +25,7 @@ const App = () => {
         <Route path="contacts" element={<Contacts />} />
         <Route path="new" element={<CreateContact />} />
         <Route path="contacts/:id" element={<ContactInfo />} />
+        <Route path="edit/:id" element={<EditContact />} />
       </Route>
     </Routes>
   );

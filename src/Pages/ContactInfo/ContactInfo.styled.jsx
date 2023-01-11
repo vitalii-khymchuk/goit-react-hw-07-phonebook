@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
 const ProfileAvatar = styled.img`
+  height: 150px;
+  width: 150px;
   position: absolute;
   bottom: 0;
   right: 50px;
@@ -10,6 +12,8 @@ const ProfileAvatar = styled.img`
 `;
 
 const Name = styled.p`
+  overflow: hidden;
+  max-width: 260px;
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 60px;
@@ -39,4 +43,18 @@ const NavBar = styled.div`
   justify-content: space-around;
 `;
 
-export { ProfileAvatar, Name, Info, CallEmailBtn, NavBar };
+const NavItem = styled.button`
+  padding: 5px;
+  font-size: 16px;
+  color: white;
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+  &:hover,
+  &:focus {
+    color: orange;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+`;
+
+export { ProfileAvatar, Name, Info, CallEmailBtn, NavBar, NavItem };

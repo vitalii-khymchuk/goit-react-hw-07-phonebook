@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Keyboard from 'react-simple-keyboard';
 import inputMask from 'simple-keyboard-input-mask';
@@ -11,7 +12,7 @@ class Numpad extends Component {
   };
 
   onChange = input => {
-    this.props.onFilterChange(input);
+    this.props.onNumberChange(input);
     this.setState({
       input: input,
     });
@@ -21,7 +22,7 @@ class Numpad extends Component {
     /**
      * If you want to handle the shift and caps lock buttons
      */
-    //if (button === "{shift}" || button === "{lock}") this.handleShift();
+    if (button === '{shift}' || button === '{shift2}') this.handleShift();
 
     const inputValue = this.state.input;
 
@@ -82,11 +83,16 @@ class Numpad extends Component {
           layoutName={this.state.layoutName}
           onChange={input => this.onChange(input)}
           onKeyPress={button => this.onKeyPress(button)}
+          onHold={console.log}
           disableCaretPositioning={true}
+          disableButtonHold={false}
           display={{
             '{call}': 'CALL',
             '{save}': 'SAVE',
             '{bksp}': 'backspace',
+            '{shift}': '*/+',
+            '{shift2}': '123',
+            '{//}': ' ',
           }}
           layout={{
             default: [
@@ -94,10 +100,21 @@ class Numpad extends Component {
               '1 2 3',
               '4 5 6',
               '7 8 9',
-              '* 0 #',
+              '{shift} 0 #',
             ],
-            shift: ['! / #', '$ % ^', '& * (', '{shift} ) +', '{bksp}'],
+            shift: [
+              '{//} {//} {//}',
+              '{//} {//} {//}',
+              '{//} {//} {//}',
+              '{//} {//} {//}',
+              '* + {shift2}',
+            ],
           }}
+          buttonTheme={[
+            { class: 'customBtn callBtn', buttons: '{call}' },
+            { class: 'customBtn saveBtn', buttons: '{save}' },
+            { class: 'customBtn backspaceBtn', buttons: '{bksp}' },
+          ]}
           inputMask={'(99) 9999-9999'}
           modules={[inputMask]}
         />
@@ -105,5 +122,9 @@ class Numpad extends Component {
     );
   }
 }
+
+Numpad.propTypes = {
+  onNumberChange: PropTypes.func.isRequired,
+};
 
 export default Numpad;

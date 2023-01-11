@@ -1,35 +1,46 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/operations';
+import { editContact } from 'redux/operations';
 import { selectContactsError } from 'redux/selectors';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CreateContNav, NavItem } from './CreateContact.styled';
+import {
+  CreateContNav,
+  NavItem,
+} from 'Pages/CreateContact/CreateContact.styled';
 import { Box, Title } from 'components/reusableComponents';
 import base64userAvatar from 'photos/base64userAvatar';
 import Uploader from 'components/Uploader';
 import ContactsInput from 'components/ContactsInput';
 import Error from 'components/Error';
+import { useEffect } from 'react';
 
 const CreateContact = () => {
   const [photo, setPhoto] = useState(null);
+  const [initData, setInitData] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const error = useSelector(selectContactsError);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const onPhotoUpload = base64Photo => setPhoto(base64Photo);
+  const initContactInfo = location.state.contactsInfo;
+
+  useEffect(() => {
+    setPhoto(initContactInfo.avatar);
+    setInitData(initContactInfo);
+  }, [initContactInfo]);
 
   const onFormSubmit = async values => {
     setIsSaving(true);
     const avatar = photo ?? base64userAvatar;
-    const contactData = { ...values, avatar };
-    const { payload } = await dispatch(addContact(contactData));
+    const contactData = { ...initData, ...values, avatar };
+    const { payload } = await dispatch(editContact(contactData));
     const id = payload.id;
     navigate(`/contacts/${id}`, { replace: true });
   };
 
-  const onCancelClick = () => navigate('/');
-  const numberToSave = location.state.number;
+  const onPhotoUpload = base64Photo => setPhoto(base64Photo);
+
+  const onCancelClick = () => navigate(`/contacts/${initData.id}`);
   return (
     <Box display="grid" gridTemplateRows="50px 1fr">
       <CreateContNav CreateContNav>
@@ -40,16 +51,13 @@ const CreateContact = () => {
           Cancel
         </NavItem>
       </CreateContNav>
-      <Title>Create contact</Title>
+      <Title>Edit contact</Title>
       {isSaving && <h2>Saving... </h2>}
       {error && <Error msg={error} />}
-      {!isSaving && !error && (
+      {!isSaving && !error && initData && (
         <>
-          <Uploader onPhotoUpload={onPhotoUpload} />
-          <ContactsInput
-            onFormSubmit={onFormSubmit}
-            initData={{ phone: numberToSave }}
-          />
+          <Uploader onPhotoUpload={onPhotoUpload} preloadPhoto={photo} />
+          <ContactsInput onFormSubmit={onFormSubmit} initData={initData} />
         </>
       )}
     </Box>

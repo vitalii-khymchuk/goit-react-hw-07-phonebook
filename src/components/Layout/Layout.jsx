@@ -1,5 +1,6 @@
 import { Box } from 'components/reusableComponents';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Suspense } from 'react';
 import { Header, MainNavigation, NavLinkStyled } from './Layout.styled';
 
 const Layout = () => {
@@ -32,7 +33,9 @@ const Layout = () => {
           }
         </Header>
       )}
-      <Outlet />
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </Box>
   );
 };

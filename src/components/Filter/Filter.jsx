@@ -1,11 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { getFilter } from 'redux/selectors';
+import { selectFilter } from 'redux/selectors';
 import { setFilter } from 'redux/filterSlice';
 import { Input } from './Filter.styled';
+import { useEffect } from 'react';
 
 export default function Filter() {
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
+  useEffect(() => {
+    return () => {
+      dispatch(setFilter(''));
+    };
+  }, [dispatch]);
+
   function onChange(e) {
     const query = e.currentTarget.value;
     dispatch(setFilter(query));

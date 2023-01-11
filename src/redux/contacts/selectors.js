@@ -1,5 +1,6 @@
 import { dynamicSort } from 'utils/sort';
 import { selectFilter } from 'redux/filter/selectors';
+import { createSelector } from '@reduxjs/toolkit';
 
 const selectContactsError = state => state.contacts.error;
 const selectContacts = state => {
@@ -10,13 +11,13 @@ const selectContacts = state => {
   return items;
 };
 
-const selectFilteredContacts = state => {
-  const filter = selectFilter(state);
-  const contacts = selectContacts(state);
-  return contacts.filter(
-    ({ name, phone }) =>
-      name.toLowerCase().includes(filter) || phone.includes(filter)
-  );
-};
+const selectFilteredContacts = createSelector(
+  [selectFilter, selectContacts],
+  (filter, contacts) =>
+    contacts.filter(
+      ({ name, phone }) =>
+        name.toLowerCase().includes(filter) || phone.includes(filter)
+    )
+);
 
 export { selectContacts, selectContactsError, selectFilteredContacts };

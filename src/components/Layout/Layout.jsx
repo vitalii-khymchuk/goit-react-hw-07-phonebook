@@ -1,6 +1,7 @@
 import { Box } from 'components/reusableComponents';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Suspense } from 'react';
+import { AiOutlineUserAdd } from 'react-icons/ai';
 import { Header, MainNavigation, NavLinkStyled } from './Layout.styled';
 
 const Layout = () => {
@@ -28,6 +29,11 @@ const Layout = () => {
               </li>
               <li>
                 <NavLinkStyled to="contacts">Contacts</NavLinkStyled>
+              </li>
+              <li>
+                <NavLinkStyled to="new">
+                  <AiOutlineUserAdd size={24} />
+                </NavLinkStyled>
               </li>
             </MainNavigation>
           }

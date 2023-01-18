@@ -2,7 +2,9 @@ import { dynamicSort } from 'utils/sort';
 import { selectFilter } from 'redux/filter/selectors';
 import { createSelector } from '@reduxjs/toolkit';
 
+const selectIsContactsLoading = state => state.contacts.isLoading;
 const selectContactsError = state => state.contacts.error;
+const selectContactInfo = state => state.contacts.selectedItem;
 const selectContacts = state => {
   const items = [...state.contacts.items];
   if (items.length > 1) {
@@ -20,4 +22,10 @@ const selectFilteredContacts = createSelector(
     )
 );
 
-export { selectContacts, selectContactsError, selectFilteredContacts };
+export {
+  selectIsContactsLoading,
+  selectContactsError,
+  selectContacts,
+  selectFilteredContacts,
+  selectContactInfo,
+};

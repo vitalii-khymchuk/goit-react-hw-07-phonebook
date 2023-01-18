@@ -29,7 +29,7 @@ const CreateContact = () => {
   };
 
   const onCancelClick = () => navigate('/');
-  const numberToSave = location.state.number;
+  const numberToSave = location.state?.number ?? '';
   return (
     <Box display="grid" gridTemplateRows="50px 1fr">
       <CreateContNav CreateContNav>

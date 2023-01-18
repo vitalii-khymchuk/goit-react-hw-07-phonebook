@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getContactInfo, deleteContact } from 'redux/operations';
-import { clearContactsInfo } from 'redux/contactsInfo/contactInfoSlice';
+import { clearContactsInfo } from 'redux/contacts/contactsSlice';
 import {
   selectContactInfo,
-  selectIsContactInfoLoading,
-  selectContactInfoError,
-} from 'redux/contactsInfo/selectors';
+  selectIsContactsLoading,
+  selectContactsError,
+} from 'redux/contacts/selectors';
 import {
   ProfileAvatar,
   Name,
@@ -37,14 +37,13 @@ const ContactInfo = () => {
       dispatch(clearContactsInfo());
     };
   }, [dispatch, id]);
-  const isLoading = useSelector(selectIsContactInfoLoading);
-  const error = useSelector(selectContactInfoError);
+  const isLoading = useSelector(selectIsContactsLoading);
+  const error = useSelector(selectContactsError);
   const contactsInfo = useSelector(selectContactInfo);
 
   const { avatar, createdAt, email, name, phone } = contactsInfo;
   const profileAvatar = isLoading || !avatar ? avatarPlaceholder : avatar;
   const backPath = location.state?.from ?? '/';
-
   const onCallClick = () => makeCall(phone);
   const onEmailClick = () => writeEmail(email);
   const onDeleteClick = () => {

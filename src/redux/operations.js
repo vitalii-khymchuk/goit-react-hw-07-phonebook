@@ -58,6 +58,7 @@ const getContactInfo = createAsyncThunk(
       const { data } = await axios.get(`/contacts/${id}`);
       return data;
     } catch (error) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
